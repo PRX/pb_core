@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'pb_core'
+
+# TODO: create command line parser for xml files
