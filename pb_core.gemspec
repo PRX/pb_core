@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = PBCore::VERSION
   gem.authors       = ["Andrew Kuklewicz"]
   gem.email         = ["andrew@prx.org"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Gem for working with PBCore 2.0 XML data}
+  gem.summary       = %q{Gem for working with PBCore 2.0 XML data}
+  gem.homepage      = "https://github.com/PRX/pb_core"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
