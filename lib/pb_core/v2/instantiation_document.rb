@@ -4,18 +4,6 @@ module PBCore
   module V2
 
     class InstantiationType < PBCore::V2::Base
-    end
-
-    class InstantiationPart < PBCore::V2::InstantiationType
-    end
-
-    class Instantiation < PBCore::V2::InstantiationType
-    end
-
-    class InstantiationDocument < PBCore::V2::InstantiationType
-    end
-
-    class InstantiationType < PBCore::V2::Base
       start_end_time_group
 
       elements  'instantiationIdentifier', :as => :identifiers, :class => PBCore::V2::Identifier
@@ -40,8 +28,14 @@ module PBCore
       elements  'instantiationRelation', :as => :relations, :class => PBCore::V2::InstantiationRelation
       elements  'instantiationRights', :as => :rights, :class => PBCore::V2::Rights
       elements  'instantiationAnnotation', :as => :annotations, :class => PBCore::V2::Annotation
-      elements  'instantiationPart', :as => :parts, :class => PBCore::V2::InstantiationPart
       elements  'instantiationExtension', :as => :extensions, :class => PBCore::V2::Extension
+      elements  'instantiationPart', :as => :parts, :class => PBCore::V2::InstantiationType
+    end
+
+    class Instantiation < PBCore::V2::InstantiationType
+    end
+
+    class InstantiationDocument < PBCore::V2::InstantiationType
     end
 
   end

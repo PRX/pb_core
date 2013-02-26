@@ -40,21 +40,55 @@ module PBCore
       def self.collection_group; include PBCore::V2::CollectionGroup; end
 
       def self.instantiation_group; include PBCore::V2::InstantiationGroup; end
+
+      def detect_element(elements_name, atr=:type, values=nil, use_first=true)
+        l = Array(self.send(elements_name))
+        values = Array(values)
+        return nil if l.size <= 0
+
+        e = nil
+        Array(values).each{|v|
+          e = l.detect{|i| element_value(i, atr) == standardize(v) }
+          break if e
+        }
+        e = l.first if use_first && e.nil?
+        return e
+      end
+
+      private
+
+      def element_value(ele, atr)
+        standardize(ele.send(atr))
+      end
+
+      def standardize(val)
+        v = val
+        if val && val.is_a?(String)
+          v = val.downcase
+          v = nil if v == ''
+        end
+        v
+      end
+
     end
+
+
 
     class Identifier < PBCore::V2::Base
       source_version_group
+      value :value
     end
 
     class Type < PBCore::V2::Base
       source_version_group
+      value :value
     end
 
     class Title < PBCore::V2::Base
       source_version_group
       start_end_time_group
-
       attribute :titleType, :as => :type
+      value :value
     end
 
     class Description < PBCore::V2::Base
@@ -73,10 +107,25 @@ module PBCore
       attribute :segmentTypeAnnotation, :as => :segment_type_annotation
 
       attribute :annotation
+
+      value :value
     end
 
     class DateType < PBCore::V2::Base
       attribute :dateType, :as => :type
+
+      value :value
+
+      def date(format=nil)
+        if format
+          DateTime.strptime(self.value, format)
+        elsif PBCore.config[:date_format]
+          DateTime.strptime(self.value, PBCore.config[:date_format])
+        else
+          DateTime.parse(self.value)
+        end
+      end
+
     end
 
     class Subject < PBCore::V2::Base
@@ -84,11 +133,15 @@ module PBCore
       start_end_time_group
 
       attribute :subjectType, :as => :type
+
+      value :value
     end
 
     class Genre < PBCore::V2::Base
       source_version_group
       start_end_time_group    
+
+      value :value
     end
 
     class Relation < PBCore::V2::Base
@@ -99,6 +152,7 @@ module PBCore
     class CoverageInfo < PBCore::V2::Base
       source_version_group
       start_end_time_group
+      value :value
     end
 
     class Coverage < PBCore::V2::Base
@@ -112,6 +166,8 @@ module PBCore
       attribute :affiliation
       attribute :ref
       attribute :annotation
+
+      value :value
     end
 
     class Creator < PBCore::V2::Base
@@ -123,11 +179,13 @@ module PBCore
       source_version_group
 
       attribute :portrayal
+
+      value :value
     end
 
     class Contributor < PBCore::V2::Base
-      element 'contributer', :as => :name, :class => PBCore::V2::Affiliate
-      element 'contributerRole', :as => :role, :class => PBCore::V2::ContributorType
+      element 'contributor', :as => :name, :class => PBCore::V2::Affiliate
+      element 'contributorRole', :as => :role, :class => PBCore::V2::ContributorType
     end
 
     class Publisher < PBCore::V2::Base
@@ -137,6 +195,7 @@ module PBCore
 
     class Annotated < PBCore::V2::Base
       attribute :annotation
+      value :value
     end
 
     class Rights < PBCore::V2::Base
@@ -150,17 +209,20 @@ module PBCore
     class Measurement < PBCore::V2::Base
       attribute :annotation
       attribute :unitsOfMeasure, :as => :units
+      value :value
     end
 
     class Standard < PBCore::V2::Base
       source_version_group
 
       attribute :profile
+      value :value
     end
 
     class Annotation < PBCore::V2::Base
       attribute :annotationType, :as => :annotation_type
       attribute :ref
+      value :value
     end
 
     class ExtensionWrap < PBCore::V2::Base
