@@ -48,7 +48,16 @@ module PBCore
 
         e = nil
         Array(values).each{|v|
-          e = l.detect{|i| element_value(i, atr) == standardize(v) }
+          e = l.detect do |i|
+            # puts "detect: #{v.inspect} #{v.class.name} #{i.inspect}"
+            case v.class.name
+            when 'Regexp'
+              # puts "match: #{v} #{element_value(i, atr)}"
+              v =~ element_value(i, atr)
+            else
+              element_value(i, atr) == standardize(v)
+            end
+          end
           break if e
         }
         e = l.first if use_first && e.nil?
@@ -145,8 +154,8 @@ module PBCore
     end
 
     class Relation < PBCore::V2::Base
-      element 'relationType', :as => :type, :class => PBCore::V2::Type
-      element 'relationIdentifier', :as => :identifier, :class => PBCore::V2::Identifier
+      element 'pbcoreRelationType', :as => :type, :class => PBCore::V2::Type
+      element 'pbcoreRelationIdentifier', :as => :identifier, :class => PBCore::V2::Identifier
     end
 
     class CoverageInfo < PBCore::V2::Base
