@@ -220,7 +220,7 @@ module PBCore
     end
 
     class Annotation < PBCore::V2::Base
-      attribute :annotationType, :as => :annotation_type
+      attribute :annotationType, :as => :type
       attribute :ref
       value :value
     end
