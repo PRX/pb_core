@@ -14,12 +14,15 @@ module PBCore
     class DocumentType < PBCore::V2::Base
       collection_group
 
-      elements  'pbcoreAssetType', :as => :asset_types, :class => PBCore::V2::Type
-      elements  'pbcoreAssetDate', :as => :asset_dates, :class => PBCore::V2::DateType
       elements  'pbcoreIdentifier', :as => :identifiers, :class => PBCore::V2::Identifier
       elements  'pbcoreTitle', :as => :titles, :class => PBCore::V2::Title
       elements  'pbcoreDescription', :as=> :descriptions, :class => PBCore::V2::Description
+
+      elements  'pbcoreAssetType', :as => :asset_types, :class => PBCore::V2::Type
+      elements  'pbcoreAssetDate', :as => :asset_dates, :class => PBCore::V2::DateType
       elements  'pbcoreSubject', :as=> :subjects, :class => PBCore::V2::Subject
+      elements  'pbcoreGenre', :as => :genres, :class => PBCore::V2::Genre
+      elements  'pbcoreRelation', :as => :relations, :class => PBCore::V2::Relation
       elements  'pbcoreCoverage', :as => :coverages, :class => PBCore::V2::Coverage
       elements  'pbcoreAudienceLevel', :as => :audience_levels, :class => PBCore::V2::Type
       elements  'pbcoreAudienceRating', :as => :audience_ratings, :class => PBCore::V2::Type
@@ -30,6 +33,7 @@ module PBCore
       elements  'pbcoreInstantiation', :as => :instantiations, :class => PBCore::V2::Instantiation
       elements  'pbcoreAnnotation', :as => :annotations, :class => PBCore::V2::Annotation
       elements  'pbcorePart', :as => :parts, :class => PBCore::V2::Part
+      elements  'pbcoreExtension', :as => :extensions, :class => PBCore::V2::Extension
     end
 
     # pbcoreDescriptionDocument
