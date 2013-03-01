@@ -41,13 +41,24 @@ module PBCore
 
       def self.instantiation_group; include PBCore::V2::InstantiationGroup; end
 
-      def detect_element(elements_name, atr=:type, values=nil, use_first=true)
-        l = Array(self.send(elements_name))
-        values = Array(values)
+
+      # this is a handy method for getting info out of the doc
+      # since so many of the elements can be multiple,
+      # and you may need to pick just one, this method lets you do that
+      # by specifying the element, then how to select it by matching values to an attr.
+      # It can return just the first one of the element by default.
+      # It also can get the value from the element rather than return the element
+      def detect_element(element_name, options={})
+        atr           = options[:match_attr] || :type
+        values        = Array(options[:match_value] || nil)
+        default_first = options.key?(:default_first) ? options[:default_first] : true
+        method        = options.key?(:value) ? options[:value] : :value
+
+        l = Array(self.send(element_name))
         return nil if l.size <= 0
 
         e = nil
-        Array(values).each{|v|
+        values.each{|v|
           e = l.detect do |i|
             # puts "detect: #{v.inspect} #{v.class.name} #{i.inspect}"
             case v.class.name
@@ -60,7 +71,10 @@ module PBCore
           end
           break if e
         }
-        e = l.first if use_first && e.nil?
+        # puts "e: #{e.inspect}, m:#{method}, e.respond_to?(m): #{e.respond_to?(method)}"
+        e = l.first if default_first && e.nil?
+        e = (e && method && e.respond_to?(method)) ? e.send(method) : nil
+        # puts "e: #{e.inspect}"
         return e
       end
 
