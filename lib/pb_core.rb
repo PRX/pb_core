@@ -7,7 +7,7 @@ require 'pb_core/v2/collection'
 
 module PBCore
 
-  # :date_format - For DateType elements, use this format to parse
+  # :date_formats - For DateType elements, try these formats to parse
   def self.config
     @_config ||= {}
   end

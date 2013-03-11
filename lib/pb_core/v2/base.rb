@@ -80,6 +80,10 @@ module PBCore
 
       private
 
+      def sanitize(value)
+        CGI::unescapeHTML(value).gsub(/<.*?>/,"").strip
+      end
+
       def element_value(ele, atr)
         standardize(ele.send(atr))
       end
@@ -140,13 +144,20 @@ module PBCore
       value :value
 
       def date(format=nil)
+        result = nil
+        date_string = sanitize(value)
         if format
-          DateTime.strptime(self.value, format)
-        elsif PBCore.config[:date_format]
-          DateTime.strptime(self.value, PBCore.config[:date_format])
+          result = DateTime.strptime(date_string, format)
+        elsif PBCore.config[:date_formats]
+          result = nil
+          Array(PBCore.config[:date_formats]).each do |f|
+            result = DateTime.strptime(date_string, f) rescue nil
+            break if result
+          end
         else
-          DateTime.parse(self.value)
+          result =DateTime.parse(date_string) rescue date_string
         end
+        result
       end
 
     end
