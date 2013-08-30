@@ -283,7 +283,7 @@ module PBCore
       element   'essenceTrackSamplingRate', :as => :sampling_rate, :class => PBCore::V2::Measurement
       element   'essenceTrackBitDepth', :as => :bit_depth
       element   'essenceTrackFrameSize', :as => :frame_size, :class => PBCore::V2::Type
-      element   'essenceTrackAspectRatio', :as => :aspect_ration, :class => PBCore::V2::Type
+      element   'essenceTrackAspectRatio', :as => :aspect_ratio, :class => PBCore::V2::Type
       element   'essenceTrackTimeStart', :as => :time_start
       element   'essenceTrackDuration', :as => :duration
       element   'essenceTrackLanguage', :as => :language, :class => PBCore::V2::Type
